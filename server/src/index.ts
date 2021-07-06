@@ -17,8 +17,8 @@ const port = 3001;
 app.use(express.json());
 app.use(cors());
 
-app.use('/tokens', tokenRouter);
-app.use('/farms', farmRouter);
+app.use('/ct/tokens', tokenRouter);
+app.use('/ct/farms', farmRouter);
 
 client.connect()
   .then(() => {
