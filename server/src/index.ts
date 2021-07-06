@@ -1,11 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import { MongoClient } from 'mongodb';
+import dotenv from 'dotenv';
 
 import farmRouter from './router/farmRouter';
 import tokenRouter from './router/tokenRouter';
 
-const mongoUri = '<monogdb_URL>';
+dotenv.config();
+
+const mongoUri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const app = express();
