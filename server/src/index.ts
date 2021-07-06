@@ -20,10 +20,6 @@ app.use(cors());
 app.use('/tokens', tokenRouter);
 app.use('/farms', farmRouter);
 
-app.get('/', (req, res) => {
-  res.send('Hello world!');
-});
-
 client.connect()
   .then(() => {
     app.set('db', client.db('cryptotracker'));
