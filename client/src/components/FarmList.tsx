@@ -17,7 +17,7 @@ function FarmList() {
       token1, token2, _id,
     } = farm;
 
-    if (depositAmount === 0 && pendingAmount === 0) return (null);
+    if (depositAmount === 0 && (hideEarned || pendingAmount === 0)) return (null);
 
     const token1Data = find(tokens, { name: token1 });
     const token2Data = find(tokens, { name: token2 });
@@ -47,9 +47,16 @@ function FarmList() {
               {showTotal ? 'Total:' : 'Deposited:'}
             </div>
             <div className="font-bold">{depositAmount}</div>
-            <div className="text-xs">
-              {token1Price !== 0 ? `~$${(token1Price).toFixed(4)} (~₹${(token1Price * 75).toFixed(2)})` : '~$NA'}
-            </div>
+            {token1Price && (
+              <React.Fragment>
+                <div className="text-xs">
+                  {`~$${(token1Price).toFixed(4)}`}
+                </div>
+                <div className="text-xs">
+                  {`(~₹${(token1Price * 75).toFixed(2)})`}
+                </div>
+              </React.Fragment>
+            )}
           </div>
         </div>
 
@@ -64,13 +71,16 @@ function FarmList() {
                   : pendingAmount
               }
             </div>
-            <div className="text-xs">
-              {
-                hideEarned || token2Price === 0
-                  ? '~$NA'
-                  : `~$${(token2Price).toFixed(4)} (~₹${(token2Price * 75).toFixed(2)})`
-              }
-            </div>
+            {(!hideEarned || token2Price !== 0) && (
+              <React.Fragment>
+                <div className="text-xs">
+                  {`~$${(token2Price).toFixed(4)}`}
+                </div>
+                <div className="text-xs">
+                  {`(~₹${(token2Price * 75).toFixed(2)})`}
+                </div>
+              </React.Fragment>
+            )}
           </div>
         </div>
       </div>

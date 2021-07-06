@@ -6,6 +6,7 @@ import {
   filter, find, isUndefined, sortBy,
 } from 'lodash';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import dotenv from 'dotenv';
 
 import ApiCall from '../api';
 import Events from '../events';
@@ -13,6 +14,10 @@ import { setBalance, setPrice, setTokens } from '../slices/tokens';
 import { getLocalWeb3, getUserWeb3 } from '../web3Helper';
 import type { TokenType } from '../types';
 import type { RootState } from '../store';
+
+dotenv.config();
+
+const serverURL = process.env.REACT_APP_SERVER_URL;
 
 function* getTokenBalance(action: PayloadAction<TokenType>) {
   const { payload } = action;
@@ -25,7 +30,7 @@ function* getTokenBalance(action: PayloadAction<TokenType>) {
   const myAddress = accounts[0];
 
   const weiBalance = yield call(contract.methods.balanceOf(myAddress).call);
-  const balance = parseFloat(web3.utils.fromWei(weiBalance, name === 'USDC' ? 'mwei' : 'ether')).toFixed(6);
+  const balance = parseFloat(web3.utils.fromWei(weiBalance, name === 'USDC' ? 'mwei' : 'ether')).toFixed(4);
 
   yield put(setBalance({ _id, balance: parseFloat(balance) }));
 }
@@ -92,7 +97,7 @@ function* getLPTokenPrice(action: PayloadAction<TokenType>) {
 function* getTokenData() {
   const web3 = getLocalWeb3();
 
-  let tokenData: TokenType[] = yield call(ApiCall, 'http://localhost:3001/tokens');
+  let tokenData: TokenType[] = yield call(ApiCall, `${serverURL}/tokens`);
 
   tokenData = sortBy(tokenData, (token) => token.name);
 

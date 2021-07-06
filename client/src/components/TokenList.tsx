@@ -20,9 +20,9 @@ function TokenList() {
 
     return (
       <div className="flex py-6 items-center" key={token._id}>
-        <div className="flex w-1/3 items-center justify-center">
+        <div className="flex flex-col w-1/3 items-center justify-center">
           <img src={image} alt={name} className="w-10 h-10" />
-          <div className="flex justify-center w-1/2 font-bold">{name}</div>
+          <div className="flex justify-center font-bold">{name}</div>
         </div>
 
         <div className="flex flex-col w-1/3 justify-center items-center">
@@ -32,7 +32,8 @@ function TokenList() {
 
         <div className="flex flex-col w-1/3 justify-center items-center">
           <div className="font-bold">{balance ?? 0}</div>
-          <div className="text-xs">{`~$${(totalPrice).toFixed(4)} (~₹${(totalPrice * 75).toFixed(2)})`}</div>
+          <div className="text-xs">{`~$${(totalPrice).toFixed(4)}`}</div>
+          <div className="text-xs">{`(~₹${(totalPrice * 75).toFixed(2)})`}</div>
         </div>
       </div>
     );
