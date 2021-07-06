@@ -17,6 +17,7 @@ import type { RootState } from '../store';
 
 dotenv.config();
 
+const defaultAddress = process.env.REACT_APP_DEFAULT_ADDRESS;
 const serverURL = process.env.REACT_APP_SERVER_URL;
 
 function* getTokenBalance(action: PayloadAction<TokenType>) {
@@ -27,7 +28,7 @@ function* getTokenBalance(action: PayloadAction<TokenType>) {
 
   const web3 = getUserWeb3();
   const accounts = yield call(web3.eth.getAccounts);
-  const myAddress = accounts[0];
+  const myAddress = accounts[0] ?? defaultAddress;
 
   const weiBalance = yield call(contract.methods.balanceOf(myAddress).call);
   const balance = parseFloat(web3.utils.fromWei(weiBalance, name === 'USDC' ? 'mwei' : 'ether')).toFixed(4);

@@ -11,6 +11,7 @@ import type { FarmType } from '../types';
 
 dotenv.config();
 
+const defaultAddress = process.env.REACT_APP_DEFAULT_ADDRESS;
 const serverURL = process.env.REACT_APP_SERVER_URL;
 
 function* getFarmAmount(action: PayloadAction<FarmType>) {
@@ -23,7 +24,7 @@ function* getFarmAmount(action: PayloadAction<FarmType>) {
 
   const web3 = getUserWeb3();
   const accounts = yield call(web3.eth.getAccounts);
-  const myAddress = accounts[0];
+  const myAddress = accounts[0] ?? defaultAddress;
 
   if (autoPool) {
     const weiShares = (yield call(contract.methods.userInfo(myAddress).call)).shares;
