@@ -81,8 +81,8 @@ function* getLPTokenPrice(action: PayloadAction<TokenType>) {
   const lpToken1WeiBalance = yield call(lpToken1.contract.methods.balanceOf(address).call);
   const lpToken2WeiBalance = yield call(lpToken2.contract.methods.balanceOf(address).call);
 
-  const lpToken1Balance = parseFloat(web3.utils.fromWei(lpToken1WeiBalance, name === 'USDC' ? 'mwei' : 'ether'));
-  const lpToken2Balance = parseFloat(web3.utils.fromWei(lpToken2WeiBalance, name === 'USDC' ? 'mwei' : 'ether'));
+  const lpToken1Balance = parseFloat(web3.utils.fromWei(lpToken1WeiBalance, lpToken1.name === 'USDC' ? 'mwei' : 'ether'));
+  const lpToken2Balance = parseFloat(web3.utils.fromWei(lpToken2WeiBalance, lpToken2.name === 'USDC' ? 'mwei' : 'ether'));
 
   const totalValue = (lpToken1Balance * lpToken1.price) + (lpToken2Balance * lpToken2.price);
 
