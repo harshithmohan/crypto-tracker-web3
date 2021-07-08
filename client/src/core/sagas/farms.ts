@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { all, call, put } from 'redux-saga/effects';
 import { PayloadAction } from '@reduxjs/toolkit';
+import { filter } from 'lodash';
 import dotenv from 'dotenv';
 
 import { getLocalWeb3, getUserWeb3 } from '../web3Helper';
@@ -62,7 +63,8 @@ function* getFarmAmount(action: PayloadAction<FarmType>) {
 function* getFarmData() {
   const web3 = getLocalWeb3();
 
-  const farmData: FarmType[] = yield call(ApiCall, `${serverURL}/farms`);
+  let farmData: FarmType[] = yield call(ApiCall, `${serverURL}/farms`);
+  farmData = filter(farmData, (farm) => !farm.disabled);
 
   for (let i = 0; i < farmData.length; i += 1) {
     const token = farmData[i];

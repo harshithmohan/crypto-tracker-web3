@@ -99,7 +99,7 @@ function* getTokenData() {
   const web3 = getLocalWeb3();
 
   let tokenData: TokenType[] = yield call(ApiCall, `${serverURL}/tokens`);
-
+  tokenData = filter(tokenData, (token) => !token.disabled);
   tokenData = sortBy(tokenData, (token) => token.name);
 
   for (let i = 0; i < tokenData.length; i += 1) {

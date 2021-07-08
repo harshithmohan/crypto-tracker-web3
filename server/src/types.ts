@@ -3,6 +3,7 @@ type BaseType = {
   name: string;
   address: string;
   abi: any[];
+  disabled?: boolean;
 };
 
 export type TokenType = BaseType & {
