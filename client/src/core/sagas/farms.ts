@@ -28,15 +28,18 @@ function* getFarmAmount(action: PayloadAction<FarmType>) {
   const myAddress = accounts[0] ?? defaultAddress;
 
   if (autoPool) {
-    const weiShares = (yield call(contract.methods.userInfo(myAddress).call)).shares;
+    const weiShares = 'userInfo' in contract.methods
+      ? (yield call(contract.methods.userInfo(myAddress).call)).shares
+      : yield call(contract.methods.balanceOf(myAddress).call);
+
     const shares = parseFloat(web3.utils.fromWei(weiShares));
 
     const weiPricePerShare = yield call(contract.methods.getPricePerFullShare().call);
     const pricePerShare = parseFloat(web3.utils.fromWei(weiPricePerShare));
 
-    const price = (shares * pricePerShare).toFixed(6);
+    const depositAmount = parseFloat((shares * pricePerShare).toFixed(6));
 
-    yield put(setDepositAmount({ _id, depositAmount: parseFloat(price) }));
+    yield put(setDepositAmount({ _id, depositAmount }));
     return;
   }
 

@@ -9,10 +9,10 @@ function TokenList() {
   const renderItem = (token: TokenType) => {
     const {
       name, price, balance,
-      isLP, image,
+      isLP, image, beefyLPName,
     } = token;
 
-    if (isLP && balance === 0) {
+    if ((isLP || beefyLPName) && balance === 0) {
       return (null);
     }
 

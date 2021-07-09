@@ -11,6 +11,7 @@ export type TokenType = BaseType & {
   image: string;
   isLP?: boolean;
   decimals?: number;
+  beefyLPName?: string;
 };
 
 export type FarmType = BaseType & {
@@ -19,7 +20,6 @@ export type FarmType = BaseType & {
   websiteName: string;
   link?: string;
   pid?: number;
-  hideEarned?: boolean;
   showTotal?: boolean;
   blockCountdown?: string;
   blockCountdownTime?: string;

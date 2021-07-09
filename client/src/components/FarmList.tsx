@@ -12,12 +12,10 @@ function FarmList() {
   const renderItem = (farm: FarmType) => {
     const {
       depositAmount, name, websiteName,
-      pendingAmount, hideEarned, showTotal, link,
+      pendingAmount, showTotal, link,
       blockCountdownTime, blockCountdownText,
       token1, token2, _id,
     } = farm;
-
-    if (depositAmount === 0 && (hideEarned || pendingAmount === 0)) return (null);
 
     const token1Data = find(tokens, { name: token1 });
     const token2Data = find(tokens, { name: token2 });
@@ -61,27 +59,25 @@ function FarmList() {
         </div>
 
         <div className="flex w-1/3 justify-center items-center">
-          <img src={token2Image} alt={token2} className="w-10 h-10" />
-          <div className="flex flex-col ml-2 justify-center items-center w-3/5">
-            <div className="font-semibold text-xs">Earned:</div>
-            <div className="font-bold">
-              {
-                hideEarned
-                  ? 'NA'
-                  : pendingAmount
-              }
-            </div>
-            {(!hideEarned || token2Price !== 0) && (
-              <React.Fragment>
-                <div className="text-xs">
-                  {`~$${(token2Price).toFixed(4)}`}
-                </div>
-                <div className="text-xs">
-                  {`(~₹${(token2Price * 75).toFixed(2)})`}
-                </div>
-              </React.Fragment>
-            )}
-          </div>
+          {!showTotal && (
+            <React.Fragment>
+              <img src={token2Image} alt={token2} className="w-10 h-10" />
+              <div className="flex flex-col ml-2 justify-center items-center w-3/5">
+                <div className="font-semibold text-xs">Earned:</div>
+                <div className="font-bold">{pendingAmount}</div>
+                {(token2Price !== 0) && (
+                  <React.Fragment>
+                    <div className="text-xs">
+                      {`~$${(token2Price).toFixed(4)}`}
+                    </div>
+                    <div className="text-xs">
+                      {`(~₹${(token2Price * 75).toFixed(2)})`}
+                    </div>
+                  </React.Fragment>
+                )}
+              </div>
+            </React.Fragment>
+          )}
         </div>
       </div>
     );

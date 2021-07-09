@@ -23,8 +23,13 @@ const serverURL = process.env.REACT_APP_SERVER_URL;
 function* getTokenBalance(action: PayloadAction<TokenType>) {
   const { payload } = action;
   const {
-    name, contract, _id,
+    name, contract, _id, beefyLPName,
   } = payload;
+
+  if (beefyLPName) {
+    yield put(setBalance({ _id, balance: 0 }));
+    return;
+  }
 
   const web3 = getUserWeb3();
   const accounts = yield call(web3.eth.getAccounts);
@@ -113,8 +118,9 @@ function* getTokenData() {
     (token) => call(getTokenBalance, { type: Events.GET_TOKEN_BALANCE, payload: token }),
   ));
 
-  const normalTokens = filter(tokenData, (token) => !token.isLP);
+  const normalTokens = filter(tokenData, (token) => (!token.isLP && !token.beefyLPName));
   const lpTokens = filter(tokenData, (token) => token.isLP);
+  const beefyLPTokens = filter(tokenData, (token) => !isUndefined(token.beefyLPName));
 
   yield all(normalTokens.map(
     (token) => call(getTokenPrice, { type: Events.GET_TOKEN_PRICE, payload: token }),
@@ -123,6 +129,15 @@ function* getTokenData() {
   yield all(lpTokens.map(
     (token) => call(getLPTokenPrice, { type: Events.GET_LP_TOKEN_PRICE, payload: token }),
   ));
+
+  if (beefyLPTokens.length > 0) {
+    const prices = yield call(ApiCall, 'https://api.beefy.finance/lps');
+    for (let i = 0; i < beefyLPTokens.length; i += 1) {
+      const { _id, beefyLPName } = beefyLPTokens[i];
+      const price = prices[beefyLPName];
+      yield put(setPrice({ _id, price }));
+    }
+  }
 }
 
 export default {

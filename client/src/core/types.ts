@@ -17,6 +17,7 @@ export type TokenType = BaseType & {
   isLP?: boolean;
   decimals?: number;
   proxyAddress?: string;
+  beefyLPName?: string;
 };
 
 export type FarmType = BaseType & {
@@ -27,7 +28,6 @@ export type FarmType = BaseType & {
   pid?: number;
   depositAmount?: number;
   pendingAmount?: number;
-  hideEarned?: boolean;
   showTotal?: boolean;
   blockCountdown?: string;
   blockCountdownTime?: string;
