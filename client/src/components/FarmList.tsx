@@ -44,7 +44,7 @@ function FarmList() {
             <div className="font-semibold text-xs">
               {showTotal ? 'Total:' : 'Deposited:'}
             </div>
-            <div className="font-bold">{depositAmount}</div>
+            <div className="font-bold">{(depositAmount ?? 0).toFixed(6)}</div>
             {token1Price && (
               <React.Fragment>
                 <div className="text-xs">
@@ -64,7 +64,7 @@ function FarmList() {
               <img src={token2Image} alt={token2} className="w-10 h-10" />
               <div className="flex flex-col ml-2 justify-center items-center w-3/5">
                 <div className="font-semibold text-xs">Earned:</div>
-                <div className="font-bold">{pendingAmount}</div>
+                <div className="font-bold">{(pendingAmount ?? 0).toFixed(6)}</div>
                 {(token2Price !== 0) && (
                   <React.Fragment>
                     <div className="text-xs">

@@ -36,9 +36,9 @@ function* getTokenBalance(action: PayloadAction<TokenType>) {
   const myAddress = accounts[0] ?? defaultAddress;
 
   const weiBalance = yield call(contract.methods.balanceOf(myAddress).call);
-  const balance = parseFloat(web3.utils.fromWei(weiBalance, name === 'USDC' ? 'mwei' : 'ether')).toFixed(4);
+  const balance = parseFloat(web3.utils.fromWei(weiBalance, name === 'USDC' ? 'mwei' : 'ether'));
 
-  yield put(setBalance({ _id, balance: parseFloat(balance) }));
+  yield put(setBalance({ _id, balance }));
 }
 
 function* getTokenPrice(action: PayloadAction<TokenType>) {

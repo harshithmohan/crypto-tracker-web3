@@ -56,8 +56,8 @@ function* getFarmAmount(action: PayloadAction<FarmType>) {
     weiAmount2 = yield call(rewardFunction(myAddress).call);
   }
 
-  const depositAmount = parseFloat(web3.utils.fromWei(weiAmount1, token1 === 'USDC' ? 'mwei' : 'ether')).toFixed(6);
-  const pendingAmount = parseFloat(web3.utils.fromWei(weiAmount2, token2 === 'USDC' ? 'mwei' : 'ether')).toFixed(6);
+  const depositAmount = web3.utils.fromWei(weiAmount1, token1 === 'USDC' ? 'mwei' : 'ether');
+  const pendingAmount = web3.utils.fromWei(weiAmount2, token2 === 'USDC' ? 'mwei' : 'ether');
 
   yield put(setDepositAmount({ _id, depositAmount: parseFloat(depositAmount) }));
   yield put(setPendingAmount({ _id, pendingAmount: parseFloat(pendingAmount) }));
