@@ -34,7 +34,9 @@ function* getFarmAmount(action: PayloadAction<FarmType>) {
 
     const shares = parseFloat(web3.utils.fromWei(weiShares));
 
-    const weiPricePerShare = yield call(contract.methods.getPricePerFullShare().call);
+    const weiPricePerShare = 'getPricePerFullShare' in contract.methods
+      ? yield call(contract.methods.getPricePerFullShare().call)
+      : yield call(contract.methods.getRatio().call);
     const pricePerShare = parseFloat(web3.utils.fromWei(weiPricePerShare));
 
     const depositAmount = parseFloat((shares * pricePerShare).toFixed(6));
