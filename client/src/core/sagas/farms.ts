@@ -51,10 +51,12 @@ function* getFarmAmount(action: PayloadAction<FarmType>) {
   let weiAmount2 = '0';
 
   if (pid !== undefined) {
-    weiAmount1 = (yield call(contract.methods.userInfo(pid, myAddress).call)).amount;
+    const temp = yield call(contract.methods.userInfo(pid, myAddress).call);
+    weiAmount1 = temp?.amount ?? temp?.shares;
     weiAmount2 = yield call(rewardFunction(pid, myAddress).call);
   } else {
-    weiAmount1 = (yield call(contract.methods.userInfo(myAddress).call)).amount;
+    const temp = yield call(contract.methods.userInfo(myAddress).call);
+    weiAmount1 = temp?.amount ?? temp?.shares;
     weiAmount2 = yield call(rewardFunction(myAddress).call);
   }
 
