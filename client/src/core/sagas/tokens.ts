@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {
-  all, call, put, select,
+  all, call, delay, put, select,
 } from 'redux-saga/effects';
 import {
   filter, find, isUndefined, sortBy,
@@ -122,7 +122,17 @@ function* getTokenData() {
   const lpTokens = filter(tokenData, (token) => token.isLP);
   const beefyLPTokens = filter(tokenData, (token) => !isUndefined(token.beefyLPName));
 
-  yield all(normalTokens.map(
+  yield all(normalTokens.slice(10).map(
+    (token) => call(getTokenPrice, { type: Events.GET_TOKEN_PRICE, payload: token }),
+  ));
+
+  yield all(normalTokens.slice(0, 10).map(
+    (token) => call(getTokenPrice, { type: Events.GET_TOKEN_PRICE, payload: token }),
+  ));
+
+  yield delay(100);
+
+  yield all(normalTokens.slice(10).map(
     (token) => call(getTokenPrice, { type: Events.GET_TOKEN_PRICE, payload: token }),
   ));
 
