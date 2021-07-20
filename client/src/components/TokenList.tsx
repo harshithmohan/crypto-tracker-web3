@@ -25,15 +25,13 @@ function TokenList() {
           <div className="flex justify-center font-bold">{name}</div>
         </div>
 
-        <div className="flex flex-col w-1/3 justify-center items-center">
-          <div className="font-bold">{`$${price ?? 0}`}</div>
-          <div className="text-xs">{`~₹${((price ?? 0) * 75).toFixed(2)}`}</div>
+        <div className="flex flex-col w-1/3 justify-center items-center font-bold">
+          {`$${price ?? 0}`}
         </div>
 
         <div className="flex flex-col w-1/3 justify-center items-center">
           <div className="font-bold">{(balance ?? 0).toFixed(4)}</div>
           <div className="text-xs">{`~$${(totalPrice).toFixed(4)}`}</div>
-          <div className="text-xs">{`(~₹${(totalPrice * 75).toFixed(2)})`}</div>
         </div>
       </div>
     );

@@ -17,6 +17,8 @@ function FarmList() {
       token1, token2, _id,
     } = farm;
 
+    if (depositAmount === 0 && pendingAmount === 0) return null;
+
     const token1Data = find(tokens, { name: token1 });
     const token2Data = find(tokens, { name: token2 });
 
@@ -45,35 +47,25 @@ function FarmList() {
               {showTotal ? 'Total:' : 'Deposited:'}
             </div>
             <div className="font-bold">{(depositAmount ?? 0).toFixed(6)}</div>
-            {token1Price && (
-              <React.Fragment>
-                <div className="text-xs">
-                  {`~$${(token1Price).toFixed(4)}`}
-                </div>
-                <div className="text-xs">
-                  {`(~₹${(token1Price * 75).toFixed(2)})`}
-                </div>
-              </React.Fragment>
+            {token1Price !== 0 && (
+              <div className="text-xs">
+                {`~$${(token1Price).toFixed(4)}`}
+              </div>
             )}
           </div>
         </div>
 
         <div className="flex w-1/3 justify-center items-center">
-          {!showTotal && (
+          {token2 && (
             <React.Fragment>
               <img src={token2Image} alt={token2} className="w-10 h-10" />
               <div className="flex flex-col ml-2 justify-center items-center w-3/5">
                 <div className="font-semibold text-xs">Earned:</div>
                 <div className="font-bold">{(pendingAmount ?? 0).toFixed(6)}</div>
-                {(token2Price !== 0) && (
-                  <React.Fragment>
-                    <div className="text-xs">
-                      {`~$${(token2Price).toFixed(4)}`}
-                    </div>
-                    <div className="text-xs">
-                      {`(~₹${(token2Price * 75).toFixed(2)})`}
-                    </div>
-                  </React.Fragment>
+                {token2Price !== 0 && (
+                  <div className="text-xs">
+                    {`~$${(token2Price).toFixed(4)}`}
+                  </div>
                 )}
               </div>
             </React.Fragment>

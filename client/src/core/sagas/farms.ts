@@ -42,29 +42,37 @@ function* getFarmAmount(action: PayloadAction<FarmType>) {
     const depositAmount = parseFloat((shares * pricePerShare).toFixed(6));
 
     yield put(setDepositAmount({ _id, depositAmount }));
-    return;
-  }
-
-  const rewardFunction = contract.methods[pendingRewardFnName];
-
-  let weiAmount1 = '0';
-  let weiAmount2 = '0';
-
-  if (pid !== undefined) {
-    const temp = yield call(contract.methods.userInfo(pid, myAddress).call);
-    weiAmount1 = temp?.amount ?? temp?.shares;
-    weiAmount2 = yield call(rewardFunction(pid, myAddress).call);
   } else {
-    const temp = yield call(contract.methods.userInfo(myAddress).call);
-    weiAmount1 = temp?.amount ?? temp?.shares;
-    weiAmount2 = yield call(rewardFunction(myAddress).call);
+    let weiAmount1 = '0';
+
+    if (pid !== undefined) {
+      const temp = yield call(contract.methods.userInfo(pid, myAddress).call);
+      weiAmount1 = temp?.amount ?? temp?.shares;
+    } else {
+      const temp = yield call(contract.methods.userInfo(myAddress).call);
+      weiAmount1 = temp?.amount ?? temp?.shares;
+    }
+
+    const depositAmount = web3.utils.fromWei(weiAmount1, token1 === 'USDC' ? 'mwei' : 'ether');
+
+    yield put(setDepositAmount({ _id, depositAmount: parseFloat(depositAmount) }));
   }
 
-  const depositAmount = web3.utils.fromWei(weiAmount1, token1 === 'USDC' ? 'mwei' : 'ether');
-  const pendingAmount = web3.utils.fromWei(weiAmount2, token2 === 'USDC' ? 'mwei' : 'ether');
+  if (token2 !== null) {
+    const rewardFunction = contract.methods[pendingRewardFnName];
 
-  yield put(setDepositAmount({ _id, depositAmount: parseFloat(depositAmount) }));
-  yield put(setPendingAmount({ _id, pendingAmount: parseFloat(pendingAmount) }));
+    let weiAmount2 = '0';
+
+    if (pid !== undefined) {
+      weiAmount2 = yield call(rewardFunction(pid, myAddress).call);
+    } else {
+      weiAmount2 = yield call(rewardFunction(myAddress).call);
+    }
+
+    const pendingAmount = web3.utils.fromWei(weiAmount2, token2 === 'USDC' ? 'mwei' : 'ether');
+
+    yield put(setPendingAmount({ _id, pendingAmount: parseFloat(pendingAmount) }));
+  }
 }
 
 function* getFarmData() {

@@ -105,7 +105,7 @@ function* getTokenData() {
 
   let tokenData: TokenType[] = yield call(ApiCall, `${serverURL}/tokens`);
   tokenData = filter(tokenData, (token) => !token.disabled);
-  tokenData = sortBy(tokenData, (token) => token.name);
+  tokenData = sortBy(tokenData, (token) => token.name.toLowerCase());
 
   for (let i = 0; i < tokenData.length; i += 1) {
     const token = tokenData[i];
