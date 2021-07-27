@@ -22,9 +22,8 @@ function MainPage() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="flex justify-between w-full bg-gray-900 p-10 items-center">
-        <div className="text-5xl text-white">Crypto Tracker</div>
-        <div className="text-lg text-white">Total Actual Value: $1220</div>
+      <div className="flex justify-between w-full bg-gray-900 p-10 items-center text-5xl text-white">
+        Crypto Tracker
       </div>
       <div className="flex mt-10 w-full">
         <TokenList />
