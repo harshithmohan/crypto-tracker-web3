@@ -31,6 +31,8 @@ router.post('/', async (req, res) => {
   const abi = await getAbi(document.address);
   document.abi = abi;
 
+  document.disabled = document?.disabled ?? false;
+
   await collection.insertOne(document);
   res.json();
 });
