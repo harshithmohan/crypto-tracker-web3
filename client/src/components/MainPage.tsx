@@ -22,10 +22,10 @@ function MainPage() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="flex justify-between w-full bg-gray-900 p-10 items-center text-5xl text-white">
+      <div className="flex justify-between w-full bg-gray-900 p-5 items-center text-3xl text-white">
         Crypto Tracker
       </div>
-      <div className="flex mt-10 w-full">
+      <div className="flex py-10 w-full">
         <TokenList />
         <FarmList />
       </div>
