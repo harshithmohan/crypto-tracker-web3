@@ -8,7 +8,7 @@ function TokenList() {
 
   const renderItem = (token: TokenType) => {
     const {
-      name, price, balance,
+      name, price, balance, address,
       isLP, image, beefyLPName,
     } = token;
 
@@ -18,11 +18,15 @@ function TokenList() {
 
     const totalPrice = (price ?? 0) * (balance ?? 0);
 
+    const swapLink = `https://app.1inch.io/#/137/swap/${address}/USDC`;
+
     return (
       <div className="flex py-6 items-center" key={token._id}>
-        <div className="flex flex-col w-1/3 items-center justify-center">
-          <img src={image} alt={name} className="w-10 h-10" />
-          <div className="flex justify-center font-bold">{name}</div>
+        <div className="flex w-1/3 justify-center">
+          <a href={swapLink ?? '#'} target="_blank" rel="noreferrer" className="flex flex-col items-center">
+            <img src={image} alt={name} className="w-10 h-10" />
+            <div className="flex justify-center font-bold">{name}</div>
+          </a>
         </div>
 
         <div className="flex flex-col w-1/3 justify-center items-center font-bold">
