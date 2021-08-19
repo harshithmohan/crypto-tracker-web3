@@ -43,9 +43,9 @@ function FarmList() {
             {token1Price !== 0 ? (
               <React.Fragment>
                 <div className="font-bold">{`$${(token1Price).toFixed(2)}`}</div>
-              <div className="text-xs">
+                <div className="text-xs">
                   {(depositAmount ?? 0).toFixed(6)}
-              </div>
+                </div>
               </React.Fragment>
             ) : (
               '-'
@@ -62,9 +62,9 @@ function FarmList() {
                 {token2Price !== 0 ? (
                   <React.Fragment>
                     <div className="font-bold">{`$${(token2Price).toFixed(2)}`}</div>
-                  <div className="text-xs">
+                    <div className="text-xs">
                       {(pendingAmount ?? 0).toFixed(6)}
-                  </div>
+                    </div>
                   </React.Fragment>
                 ) : (
                   '-'
