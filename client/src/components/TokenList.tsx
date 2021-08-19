@@ -34,8 +34,8 @@ function TokenList() {
         </div>
 
         <div className="flex flex-col w-1/3 justify-center items-center">
-          <div className="font-bold">{(balance ?? 0).toFixed(4)}</div>
-          <div className="text-xs">{`~$${(totalPrice).toFixed(4)}`}</div>
+          <div className="font-bold">{`$${(totalPrice).toFixed(2)}`}</div>
+          <div className="text-xs">{(balance ?? 0).toFixed(6)}</div>
         </div>
       </div>
     );
