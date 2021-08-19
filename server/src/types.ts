@@ -21,9 +21,6 @@ export type FarmType = BaseType & {
   link?: string;
   pid?: number;
   showTotal?: boolean;
-  blockCountdown?: string;
-  blockCountdownTime?: string;
-  blockCountdownText?: string;
   pendingRewardFnName?: string;
   autoPool?: boolean;
 };

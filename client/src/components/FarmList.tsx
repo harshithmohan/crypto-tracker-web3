@@ -13,7 +13,6 @@ function FarmList() {
     const {
       depositAmount, name, websiteName,
       pendingAmount, showTotal, link,
-      blockCountdownTime, blockCountdownText,
       token1, token2, _id,
     } = farm;
 
@@ -35,9 +34,6 @@ function FarmList() {
           <a href={link ?? '#'} target="_blank" rel="noreferrer">
             <div className="font-bold">{name}</div>
           </a>
-          {blockCountdownTime && (
-            <div className="text-xs">{blockCountdownText + blockCountdownTime}</div>
-          )}
         </div>
 
         <div className="flex w-1/3 justify-center items-center">

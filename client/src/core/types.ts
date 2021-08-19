@@ -29,9 +29,6 @@ export type FarmType = BaseType & {
   depositAmount?: number;
   pendingAmount?: number;
   showTotal?: boolean;
-  blockCountdown?: string;
-  blockCountdownTime?: string;
-  blockCountdownText?: string;
   pendingRewardFnName?: string;
   autoPool?: string;
 };
