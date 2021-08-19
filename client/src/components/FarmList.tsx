@@ -16,8 +16,6 @@ function FarmList() {
       token1, token2, _id,
     } = farm;
 
-    if (depositAmount === 0 && pendingAmount === 0) return null;
-
     const token1Data = find(tokens, { name: token1 });
     const token2Data = find(tokens, { name: token2 });
 
