@@ -262,6 +262,7 @@ function* getTokenData() {
   const web3 = getLocalWeb3();
 
   let tokenData: TokenType[] = yield call(ApiCall, `${serverURL}/tokens`);
+  tokenData = filter(tokenData, (token) => !token.disabled);
   tokenData = sortBy(tokenData, (token) => token.name.toLowerCase());
 
   for (let i = 0; i < tokenData.length; i += 1) {
@@ -270,8 +271,6 @@ function* getTokenData() {
   }
 
   yield put(setTokens(tokenData));
-
-  tokenData = filter(tokenData, (token) => !token.disabled);
 
   yield call(getTokenBalance, { type: Events.GET_TOKEN_BALANCE, payload: find(tokenData, { name: 'WMATIC' }) });
 
