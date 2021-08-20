@@ -12,6 +12,7 @@ export type TokenType = BaseType & {
   isLP?: boolean;
   decimals?: number;
   beefyLPName?: string;
+  lpAddress?: string;
 };
 
 export type FarmType = BaseType & {

@@ -18,6 +18,7 @@ export type TokenType = BaseType & {
   decimals?: number;
   proxyAddress?: string;
   beefyLPName?: string;
+  lpAddress?: string;
 };
 
 export type FarmType = BaseType & {
