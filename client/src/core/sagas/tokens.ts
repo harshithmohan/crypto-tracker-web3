@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {
-  all, call, delay, put, select,
+  all, call, put, select,
 } from 'redux-saga/effects';
 import {
   filter, find, isUndefined, sortBy,
@@ -184,7 +184,11 @@ function* getTokenPrice(action: PayloadAction<TokenType>) {
     const lpContract = new web3.eth.Contract(lpABI, lpAddress);
 
     const token0 = yield call(lpContract.methods.token0().call);
+    const token1 = yield call(lpContract.methods.token1().call);
     const reserves = yield call(lpContract.methods.getReserves().call);
+
+    const tokenData = yield select((state: RootState) => state.tokens);
+    const maticPrice = find(tokenData, { name: 'WMATIC' }).price;
 
     let reserve0 = 0;
     let reserve1 = 0;
@@ -192,8 +196,14 @@ function* getTokenPrice(action: PayloadAction<TokenType>) {
     if (token0.toLowerCase() === '0x2791bca1f2de4661ed88a30c99a7a9449aa84174') {
       reserve0 = parseFloat(web3.utils.fromWei(reserves[0], 'mwei'));
       reserve1 = parseFloat(web3.utils.fromWei(reserves[1]));
-    } else {
+    } else if (token1.toLowerCase() === '0x2791bca1f2de4661ed88a30c99a7a9449aa84174') {
       reserve0 = parseFloat(web3.utils.fromWei(reserves[1], 'mwei'));
+      reserve1 = parseFloat(web3.utils.fromWei(reserves[0]));
+    } else if (token0.toLowerCase() === '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270') {
+      reserve0 = parseFloat(web3.utils.fromWei(reserves[0])) * maticPrice;
+      reserve1 = parseFloat(web3.utils.fromWei(reserves[1]));
+    } else {
+      reserve0 = parseFloat(web3.utils.fromWei(reserves[1])) * maticPrice;
       reserve1 = parseFloat(web3.utils.fromWei(reserves[0]));
     }
 
@@ -252,7 +262,6 @@ function* getTokenData() {
   const web3 = getLocalWeb3();
 
   let tokenData: TokenType[] = yield call(ApiCall, `${serverURL}/tokens`);
-  tokenData = filter(tokenData, (token) => !token.disabled);
   tokenData = sortBy(tokenData, (token) => token.name.toLowerCase());
 
   for (let i = 0; i < tokenData.length; i += 1) {
@@ -262,6 +271,10 @@ function* getTokenData() {
 
   yield put(setTokens(tokenData));
 
+  tokenData = filter(tokenData, (token) => !token.disabled);
+
+  yield call(getTokenBalance, { type: Events.GET_TOKEN_BALANCE, payload: find(tokenData, { name: 'WMATIC' }) });
+
   yield all(tokenData.map(
     (token) => call(getTokenBalance, { type: Events.GET_TOKEN_BALANCE, payload: token }),
   ));
@@ -270,17 +283,7 @@ function* getTokenData() {
   const lpTokens = filter(tokenData, (token) => token.isLP);
   const beefyLPTokens = filter(tokenData, (token) => !isUndefined(token.beefyLPName));
 
-  yield all(normalTokens.slice(10).map(
-    (token) => call(getTokenPrice, { type: Events.GET_TOKEN_PRICE, payload: token }),
-  ));
-
-  yield all(normalTokens.slice(0, 10).map(
-    (token) => call(getTokenPrice, { type: Events.GET_TOKEN_PRICE, payload: token }),
-  ));
-
-  yield delay(100);
-
-  yield all(normalTokens.slice(10).map(
+  yield all(normalTokens.map(
     (token) => call(getTokenPrice, { type: Events.GET_TOKEN_PRICE, payload: token }),
   ));
 
