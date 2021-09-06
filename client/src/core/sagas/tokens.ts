@@ -272,7 +272,7 @@ function* getTokenData() {
 
   yield put(setTokens(tokenData));
 
-  yield call(getTokenBalance, { type: Events.GET_TOKEN_BALANCE, payload: find(tokenData, { name: 'WMATIC' }) });
+  yield call(getTokenBalance, { type: Events.GET_TOKEN_PRICE, payload: find(tokenData, { name: 'WMATIC' }) });
 
   yield all(tokenData.map(
     (token) => call(getTokenBalance, { type: Events.GET_TOKEN_BALANCE, payload: token }),
