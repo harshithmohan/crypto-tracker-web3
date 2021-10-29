@@ -20,10 +20,10 @@ function* getFarmAmount(action: PayloadAction<FarmType>) {
   const {
     contract, _id, pid, token1,
     pendingRewardFnName, token2,
-    autoPool,
+    autoPool, chain,
   } = payload;
 
-  const web3 = getUserWeb3();
+  const web3 = getUserWeb3(chain);
   const accounts = yield call(web3.eth.getAccounts);
   const myAddress = accounts[0] ?? defaultAddress;
 
@@ -76,14 +76,13 @@ function* getFarmAmount(action: PayloadAction<FarmType>) {
 }
 
 function* getFarmData() {
-  const web3 = getLocalWeb3();
-
   let farmData: FarmType[] = yield call(ApiCall, `${serverURL}/farms`);
   farmData = filter(farmData, (farm) => !farm.disabled);
   farmData = sortBy(farmData, (farm) => farm.name.toLowerCase());
 
   for (let i = 0; i < farmData.length; i += 1) {
     const token = farmData[i];
+    const web3 = getLocalWeb3(token.chain);
     farmData[i].contract = new web3.eth.Contract(token.abi, token.address);
   }
 

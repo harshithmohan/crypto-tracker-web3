@@ -4,6 +4,7 @@ type BaseType = {
   address: string;
   abi: any[];
   disabled: boolean;
+  chain: string;
 };
 
 export type TokenType = BaseType & {

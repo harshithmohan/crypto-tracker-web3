@@ -3,13 +3,18 @@ import { useAppSelector } from '../core/hooks';
 
 import type { TokenType } from '../core/types';
 
+const logoMap = {
+  ftm: 'https://assets.spookyswap.finance/tokens/FTM.png',
+  matic: 'https://polycat.finance/images/tokens/wmatic.svg',
+} as { [key: string]: string };
+
 function TokenList() {
   const tokens = useAppSelector((state) => state.tokens);
 
   const renderItem = (token: TokenType) => {
     const {
       name, price, balance, address,
-      isLP, image, beefyLPName,
+      isLP, image, beefyLPName, chain,
     } = token;
 
     if ((isLP || beefyLPName) && balance === 0) {
@@ -25,7 +30,10 @@ function TokenList() {
         <div className="flex w-1/3 justify-center">
           <a href={swapLink ?? '#'} target="_blank" rel="noreferrer" className="flex flex-col items-center">
             <img src={image} alt={name} className="w-10 h-10" />
-            <div className="flex justify-center font-bold">{name}</div>
+            <div className="flex justify-center items-center font-bold">
+              {name}
+              <img src={logoMap[chain]} alt={chain} className="w-4 h-4 ml-2" />
+            </div>
           </a>
         </div>
 

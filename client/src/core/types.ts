@@ -8,6 +8,7 @@ type BaseType = {
   abi: AbiItem[];
   contract?: Contract;
   disabled?: boolean;
+  chain: string;
 };
 
 export type TokenType = BaseType & {
