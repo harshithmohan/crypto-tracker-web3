@@ -308,7 +308,7 @@ function* getTokenPrice(action: PayloadAction<TokenType>) {
   } = payload;
   let price = 0;
 
-  if (name === 'USDC') {
+  if (['DAI', 'USDT', 'USDC'].includes(name)) {
     price = 1;
   } else if (lpAddress) {
     const web3 = getLocalWeb3(chain);
