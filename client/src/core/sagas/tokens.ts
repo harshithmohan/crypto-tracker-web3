@@ -283,7 +283,8 @@ const lpABI = {
 function* getTokenBalance(action: PayloadAction<TokenType>) {
   const { payload } = action;
   const {
-    name, contract, _id, beefyLPName, chain,
+    contract, _id, beefyLPName, chain,
+    decimals,
   } = payload;
 
   if (beefyLPName) {
@@ -296,7 +297,7 @@ function* getTokenBalance(action: PayloadAction<TokenType>) {
   const myAddress = accounts[0] ?? defaultAddress;
 
   const weiBalance = yield call(contract.methods.balanceOf(myAddress).call);
-  const balance = parseFloat(web3.utils.fromWei(weiBalance, name === 'USDC' ? 'mwei' : 'ether'));
+  const balance = parseFloat(web3.utils.fromWei(weiBalance, (decimals === 6) ? 'mwei' : 'ether'));
 
   yield put(setBalance({ _id, balance }));
 }
@@ -328,12 +329,6 @@ function* getTokenPrice(action: PayloadAction<TokenType>) {
     } else if (token1.toLowerCase() === '0x2791bca1f2de4661ed88a30c99a7a9449aa84174'
       || token1.toLowerCase() === '0x04068da6c83afcfa0e13ba15a6696662335d5b75') {
       reserve0 = parseFloat(web3.utils.fromWei(reserves[1], 'mwei'));
-      reserve1 = parseFloat(web3.utils.fromWei(reserves[0]));
-    } else if (token0.toLowerCase() === '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270') {
-      reserve0 = parseFloat(web3.utils.fromWei(reserves[0])) * maticPrice;
-      reserve1 = parseFloat(web3.utils.fromWei(reserves[1]));
-    } else {
-      reserve0 = parseFloat(web3.utils.fromWei(reserves[1])) * maticPrice;
       reserve1 = parseFloat(web3.utils.fromWei(reserves[0]));
     }
 
@@ -374,8 +369,8 @@ function* getLPTokenPrice(action: PayloadAction<TokenType>) {
   const lpToken1WeiBalance = yield call(lpToken1.contract.methods.balanceOf(address).call);
   const lpToken2WeiBalance = yield call(lpToken2.contract.methods.balanceOf(address).call);
 
-  const lpToken1Balance = parseFloat(web3.utils.fromWei(lpToken1WeiBalance, ['USDC', 'USDT'].includes(lpToken1.name) ? 'mwei' : 'ether'));
-  const lpToken2Balance = parseFloat(web3.utils.fromWei(lpToken2WeiBalance, ['USDC', 'USDT'].includes(lpToken2.name) ? 'mwei' : 'ether'));
+  const lpToken1Balance = parseFloat(web3.utils.fromWei(lpToken1WeiBalance, (lpToken1.decimals === 6) ? 'mwei' : 'ether'));
+  const lpToken2Balance = parseFloat(web3.utils.fromWei(lpToken2WeiBalance, (lpToken2.decimals === 6) ? 'mwei' : 'ether'));
 
   const totalValue = (lpToken1Balance * lpToken1.price) + (lpToken2Balance * lpToken2.price);
 
