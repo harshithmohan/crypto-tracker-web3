@@ -318,9 +318,6 @@ function* getTokenPrice(action: PayloadAction<TokenType>) {
     const token1 = yield call(lpContract.methods.token1().call);
     const reserves = yield call(lpContract.methods.getReserves().call);
 
-    const tokenData = yield select((state: RootState) => state.tokens);
-    const maticPrice = find(tokenData, { name: 'WMATIC' }).price;
-
     let reserve0 = 0;
     let reserve1 = 0;
 
@@ -403,8 +400,6 @@ function* getTokenData() {
   }
 
   yield put(setTokens(tokenData));
-
-  yield call(getTokenBalance, { type: Events.GET_TOKEN_PRICE, payload: find(tokenData, { name: 'WMATIC' }) });
 
   yield all(tokenData.map(
     (token) => call(getTokenBalance, { type: Events.GET_TOKEN_BALANCE, payload: token }),
