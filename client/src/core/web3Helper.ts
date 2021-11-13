@@ -5,7 +5,7 @@ const { ethereum } = window as any;
 const rpcUrl = {
   matic: 'https://polygon-mainnet.g.alchemy.com/v2/2Zdz4VJKhHQHZ2jqDqZpKN348kxXW2de',
   ftm: 'https://rpc.ftm.tools',
-  cronos: 'https://evm-cronos.crypto.org',
+  cronos: 'https://cronos-rpc.elk.finance',
 } as { [key: string]: string };
 
 export const getUserWeb3 = (chain: string) => {
