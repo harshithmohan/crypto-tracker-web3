@@ -1951,6 +1951,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/comma-number@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/comma-number/-/comma-number-2.1.0.tgz#a372062b88325a52c06bd5b2a89b4858bd46ad1f"
+  integrity sha512-9MoSSdmOOkzhGY4HKeA6Fc59Pvs4k5lryZZK6PrH8PgKQDwDjy/TCP5wuCHD9rTmKpOJlm85KuTlXGSiI1khdg==
+
 "@types/eslint@^7.2.6":
   version "7.2.13"
   resolved "https://registry.yarnpkg.com/@types/eslint/-/eslint-7.2.13.tgz#e0ca7219ba5ded402062ad6f926d491ebb29dd53"
@@ -3792,6 +3797,11 @@ combined-stream@^1.0.6, combined-stream@^1.0.8, combined-stream@~1.0.6:
   integrity sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==
   dependencies:
     delayed-stream "~1.0.0"
+
+comma-number@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/comma-number/-/comma-number-2.1.0.tgz#0f38eef7293fe5ba4a0de6d1ffd3ea70a5e3e288"
+  integrity sha512-fRcu1c+4yFLFp3tgranEkKPPWRlnkWQXr4p0KBL0WW9Kd2wmbKAoQ2R4rluFm4ubXCtXGybEaFB7r6YgPOnahQ==
 
 commander@^2.20.0:
   version "2.20.3"

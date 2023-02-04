@@ -25,4 +25,5 @@ export type FarmType = BaseType & {
   showTotal?: boolean;
   pendingRewardFnName?: string;
   autoPool?: boolean;
+  type: string;
 };

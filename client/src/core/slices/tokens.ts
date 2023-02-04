@@ -28,11 +28,20 @@ export const tokenSlice = createSlice({
       merge(action.payload, state, '_id');
       return action.payload;
     },
+    setImage(state, action: PayloadAction<{ _id: string, image: string }>) {
+      const idx = findIndex(state, { _id: action.payload._id });
+      state[idx].image = action.payload.image;
+    },
+    setImage2(state, action: PayloadAction<{ _id: string, image: string }>) {
+      const idx = findIndex(state, { _id: action.payload._id });
+      state[idx].image2 = action.payload.image;
+    },
   },
 });
 
 export const {
   setBalance, setContract, setTokens, setPrice,
+  setImage, setImage2,
 } = tokenSlice.actions;
 
 export default tokenSlice.reducer;

@@ -13,6 +13,7 @@ type BaseType = {
 
 export type TokenType = BaseType & {
   image: string;
+  image2?: string;
   price?: number;
   balance?: number;
   isLP?: boolean;
@@ -20,6 +21,7 @@ export type TokenType = BaseType & {
   proxyAddress?: string;
   beefyLPName?: string;
   lpAddress?: string;
+  priceInvert?: boolean;
 };
 
 export type FarmType = BaseType & {
@@ -33,4 +35,13 @@ export type FarmType = BaseType & {
   showTotal?: boolean;
   pendingRewardFnName?: string;
   autoPool?: string;
+  type: string;
+};
+
+export type DexScreenerPairType = {
+  dexId: string;
+  pair: {
+    priceNative: string;
+    priceUsd: string;
+  }
 };

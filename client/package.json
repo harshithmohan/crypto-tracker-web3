@@ -9,6 +9,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "comma-number": "^2.1.0",
     "dotenv": "^10.0.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
@@ -65,6 +66,7 @@
     ]
   },
   "devDependencies": {
+    "@types/comma-number": "^2.1.0",
     "@types/lodash": "^4.14.170",
     "@types/moment-duration-format": "^2.2.2",
     "@types/react-redux": "^7.1.16",

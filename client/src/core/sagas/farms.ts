@@ -3,8 +3,9 @@ import { all, call, put } from 'redux-saga/effects';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { filter, sortBy } from 'lodash';
 import dotenv from 'dotenv';
+import type { AbiItem } from 'web3-utils';
 
-import { getLocalWeb3, getUserWeb3 } from '../web3Helper';
+import { getWeb3 } from '../web3Helper';
 import Events from '../events';
 import ApiCall from '../api';
 import { setDepositAmount, setFarms, setPendingAmount } from '../slices/farms';
@@ -20,10 +21,10 @@ function* getFarmAmount(action: PayloadAction<FarmType>) {
   const {
     contract, _id, pid, token1,
     pendingRewardFnName, token2,
-    autoPool, chain,
+    autoPool, chain, type,
   } = payload;
 
-  const web3 = getUserWeb3(chain);
+  const web3 = getWeb3(chain);
   const accounts = yield call(web3.eth.getAccounts);
   const myAddress = accounts[0] ?? defaultAddress;
 
@@ -42,7 +43,7 @@ function* getFarmAmount(action: PayloadAction<FarmType>) {
     const depositAmount = parseFloat((shares * pricePerShare).toFixed(6));
 
     yield put(setDepositAmount({ _id, depositAmount }));
-  } else {
+  } else if (type === 'farm') {
     let weiAmount1 = '0';
 
     if (pid !== undefined) {
@@ -54,6 +55,11 @@ function* getFarmAmount(action: PayloadAction<FarmType>) {
     }
 
     const depositAmount = web3.utils.fromWei(weiAmount1, token1 === 'USDC' ? 'mwei' : 'ether');
+
+    yield put(setDepositAmount({ _id, depositAmount: parseFloat(depositAmount) }));
+  } else if (type === 'boardroom') {
+    const balance = yield call(contract.methods.balanceOf(myAddress).call);
+    const depositAmount = web3.utils.fromWei(balance, 'ether');
 
     yield put(setDepositAmount({ _id, depositAmount: parseFloat(depositAmount) }));
   }
@@ -81,9 +87,9 @@ function* getFarmData() {
   farmData = sortBy(farmData, (farm) => farm.name.toLowerCase());
 
   for (let i = 0; i < farmData.length; i += 1) {
-    const token = farmData[i];
-    const web3 = getLocalWeb3(token.chain);
-    farmData[i].contract = new web3.eth.Contract(token.abi, token.address);
+    const farm = farmData[i];
+    const web3 = getWeb3(farm.chain);
+    farmData[i].contract = new web3.eth.Contract(farm.abi, farm.address);
   }
 
   yield put(setFarms(farmData));
